@@ -16,7 +16,7 @@ namespace CoronaTest.ImportConsole
         const int Idx_TestCenterStreet = 3;
         const int Idx_TestCenterSlotCapacity = 4;
 
-        const string FileNameCampaigns = "Kampagnen.csv";
+        const string FileNameCampaigns = "Campaings.csv";
         const int Idx_CampaignName = 0;
         const int Idx_From = 1;
         const int Idx_To = 2;
