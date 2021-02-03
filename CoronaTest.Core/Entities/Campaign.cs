@@ -4,7 +4,13 @@ using System.Text;
 
 namespace CoronaTest.Core.Entities
 {
-    class Campaign
+    public class Campaign : EntityObject
     {
+        public string Name { get; set; }
+        public DateTime From { get; set; }
+
+        public DateTime To { get; set; }
+
+        public ICollection<TestCenter> AvailableTestCenters { get; set; }
     }
 }

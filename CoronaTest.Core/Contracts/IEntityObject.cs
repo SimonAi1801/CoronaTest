@@ -4,7 +4,10 @@ using System.Text;
 
 namespace CoronaTest.Core.Contracts
 {
-    interface IEntityObject
+    public interface IEntityObject
     {
+        public int Id { get; set; }
+
+        public byte[] RowVersion { get; set; }
     }
 }

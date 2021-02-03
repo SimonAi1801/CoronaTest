@@ -6,5 +6,8 @@ namespace CoronaTest.Core.Enums
 {
     public enum TestResults
     {
+        Unkown,
+        Positive,
+        Negative
     }
 }

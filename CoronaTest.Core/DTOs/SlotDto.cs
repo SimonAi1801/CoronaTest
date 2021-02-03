@@ -4,7 +4,9 @@ using System.Text;
 
 namespace CoronaTest.Core.DTOs
 {
-    class SlotDto
+    public class SlotDto
     {
+        public DateTime Time { get; set; }
+        public int SlotsAvailable { get; set; }
     }
 }
