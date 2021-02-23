@@ -32,9 +32,9 @@ namespace CoronaTest.API.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Liefert ein Testcenter zur Id
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">testCenterId</param>
         /// <returns></returns>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -59,6 +59,11 @@ namespace CoronaTest.API.Controllers
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Liefert alle Untersuchungen zu einem Testcenter
+        /// </summary>
+        /// <param name="id">testCenterId</param>
+        /// <returns></returns>
         [HttpGet("{id}/Examinations")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
