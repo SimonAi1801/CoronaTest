@@ -82,8 +82,8 @@ namespace CoronaTest.API.Controllers
         /// </summary>
         /// <param name="campaignDto">CampaignDto</param>
         /// <returns>CampaignDto</returns>
-        [HttpPost("{campaignDto}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> CreateCampaign(CampaignDto campaignDto)
@@ -98,7 +98,7 @@ namespace CoronaTest.API.Controllers
         /// <param name="testCenterIdToAdd">testCenterId</param>
         /// <returns>CampaignDto</returns>
         [HttpPost("{id}/TestCenters/{testCenterIdToAdd}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> AddCampaignToTestCenter(int id, int testCenterIdToAdd)
