@@ -75,5 +75,14 @@ namespace CoronaTest.API.Controllers
         {
             throw new NotImplementedException();
         }
+
+        [HttpGet("byCalenderWeek/{calenderWeek}/{from}/{to}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetByCalenderWeekAndTimeSpan(int calenderWeek, DateTime from, DateTime to)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
