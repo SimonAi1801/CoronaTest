@@ -7,5 +7,6 @@ namespace CoronaTest.API.DTOs
 {
     public class ExaminationDto
     {
+
     }
 }
