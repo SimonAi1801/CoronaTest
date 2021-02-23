@@ -9,17 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Dtos\" />
-    <Folder Include="Controller\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.0.7" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CoronaTest.Core\CoronaTest.Core.csproj" />
     <ProjectReference Include="..\CoronaTest.Persistence\CoronaTest.Persistence.csproj" />
   </ItemGroup>
+
 
 </Project>

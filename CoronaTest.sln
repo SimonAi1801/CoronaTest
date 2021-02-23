@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoronaTest.ImportConsole", "CoronaTest.ImportConsole\CoronaTest.ImportConsole.csproj", "{679B687D-14E0-4284-AA2D-D7E6531C1CD1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoronaTest.ImportConsole", "CoronaTest.ImportConsole\CoronaTest.ImportConsole.csproj", "{679B687D-14E0-4284-AA2D-D7E6531C1CD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoronaTest.Core", "CoronaTest.Core\CoronaTest.Core.csproj", "{B6951CDF-0B33-42DB-8441-370960C18EF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoronaTest.Core", "CoronaTest.Core\CoronaTest.Core.csproj", "{B6951CDF-0B33-42DB-8441-370960C18EF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoronaTest.Persistence", "CoronaTest.Persistence\CoronaTest.Persistence.csproj", "{BB2E5B5E-2117-451D-9F87-171EE87EE4B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoronaTest.Persistence", "CoronaTest.Persistence\CoronaTest.Persistence.csproj", "{BB2E5B5E-2117-451D-9F87-171EE87EE4B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoronaTest.Web", "CoronaTest.Web\CoronaTest.Web.csproj", "{88CA472D-A8D5-4913-B4FC-2C3A52E84152}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoronaTest.Web", "CoronaTest.Web\CoronaTest.Web.csproj", "{88CA472D-A8D5-4913-B4FC-2C3A52E84152}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj", "{83DBBC1F-5775-47F0-95DC-166E6C2DF6A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utils", "Utils\Utils.csproj", "{83DBBC1F-5775-47F0-95DC-166E6C2DF6A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoronaTest.API", "CoronaTest.API\CoronaTest.API.csproj", "{53A8F7B7-B583-4DDE-AA20-045DD4C2A03A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{83DBBC1F-5775-47F0-95DC-166E6C2DF6A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83DBBC1F-5775-47F0-95DC-166E6C2DF6A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83DBBC1F-5775-47F0-95DC-166E6C2DF6A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53A8F7B7-B583-4DDE-AA20-045DD4C2A03A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53A8F7B7-B583-4DDE-AA20-045DD4C2A03A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53A8F7B7-B583-4DDE-AA20-045DD4C2A03A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53A8F7B7-B583-4DDE-AA20-045DD4C2A03A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
