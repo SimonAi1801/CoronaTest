@@ -21,27 +21,59 @@ namespace CoronaTest.API.Controllers
         }
 
         /// <summary>
-        /// Liefert die Statistik zurück, die bei diesem Zeitpunkt entsanden ist.
+        /// Liefert alle Statistiken zurück
         /// </summary>
-        /// <param name="timestamp"></param>
-        /// <returns>StatistikDTO</returns>
-        [HttpGet("timestamp")]
+        /// <returns>StatistikDTO[]</returns>
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<StatisticsDto> Get(DateTime timestamp)
+        public async Task<IActionResult> Get()
         {
-            if (timestamp >= DateTime.Now)
-            {
-                return NotFound("Der Zeitpunkt liegt in der Zukunft!");
-            }
-            else
-            {
-                return Ok(new StatisticsDto 
-                {
-                    
-                });
-            }
+            throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Liefert die Statistik über die Id
+        /// </summary>
+        /// <param name="id">statisticsId</param>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Liefert alle Statistiken in dem einegegebenen Zeitraum
+        /// </summary>
+        /// <param name="from">Startzeit</param>
+        /// <param name="to">Endzeit</param>
+        /// <returns></returns>
+        [HttpGet("{from}/{to}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetByTimeSpan(DateTime from, DateTime to)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Liefert alle Statistiken zur Postleitzahl und zu einem Zeitraum
+        /// </summary>
+        /// <param name="postalCode">Postleitzahl</param>
+        /// <param name="from">Startzeit</param>
+        /// <param name="to"></param>
+        /// <returns></returns>
+        [HttpGet("byPostalCode/{postalCode}/{from}/{to}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetByPostalCodeAndTimeSpan(string postalCode, DateTime from, DateTime to)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
