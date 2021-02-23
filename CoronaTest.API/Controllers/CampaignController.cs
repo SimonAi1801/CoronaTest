@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace CoronaTest.API.Controllers
 {
+    /// <summary>
+    /// Dieser Controller ist für die Datenbehandlung der Kamapgnen zuständig.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class CampaignController : ControllerBase

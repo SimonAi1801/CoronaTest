@@ -11,7 +11,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace CoronaTest.API
@@ -43,7 +45,7 @@ namespace CoronaTest.API
                     {
                         Name = "Simon Aichmayr",
                         Email = string.Empty,
-                        Url = new Uri("https://twitter.com/spboyer"),
+                        Url = new Uri("https://simonaichmayr.com"),
                     },
                     License = new OpenApiLicense
                     {
@@ -51,6 +53,9 @@ namespace CoronaTest.API
                         Url = new Uri("https://example.com/license"),
                     }
                 });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
         }
 
