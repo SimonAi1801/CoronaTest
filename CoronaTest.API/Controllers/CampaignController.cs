@@ -301,7 +301,7 @@ namespace CoronaTest.API.Controllers
         /// <param name="id">campaignId</param>
         /// <param name="testCenterIdToRemove">testCenterId</param>
         /// <returns></returns>
-        [HttpDelete("{id}TestCenters/{testCenterIdToRemove}")]
+        [HttpDelete("{id}/TestCenters/{testCenterIdToRemove}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
