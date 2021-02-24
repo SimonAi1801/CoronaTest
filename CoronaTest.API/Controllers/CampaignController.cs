@@ -267,9 +267,32 @@ namespace CoronaTest.API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> AddCampaignToTestCenter(int id, int testCenterIdToAdd)
+        public async Task<IActionResult> AddCampaignToTestCenter(int? id, int? testCenterIdToAdd)
         {
-            throw new NotImplementedException();
+            if (id == null || testCenterIdToAdd == null)
+            {
+                return BadRequest();
+            }
+
+            var campaign = await _unitOfWork.Campaigns.GetByIdAsync(id.Value);
+            var testCenter = await _unitOfWork.TestCenters.GetByIdAsync(testCenterIdToAdd.Value);
+
+            if (campaign != null && testCenter != null)
+            {
+                try
+                {
+                    testCenter.AvailableCampaigns.Add(campaign);
+                    return Ok(await _unitOfWork.SaveChangesAsync());
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         /// <summary>
@@ -278,13 +301,36 @@ namespace CoronaTest.API.Controllers
         /// <param name="id">campaignId</param>
         /// <param name="testCenterIdToRemove">testCenterId</param>
         /// <returns></returns>
-        [HttpDelete("{id}TTestCenters/{testCenterIdToRemove}")]
+        [HttpDelete("{id}TestCenters/{testCenterIdToRemove}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteCampaignFromTestCener(int id, int testCenterIdToRemove)
+        public async Task<IActionResult> DeleteCampaignFromTestCener(int? id, int? testCenterIdToRemove)
         {
-            throw new NotImplementedException();
+            if (id == null || testCenterIdToRemove == null)
+            {
+                return BadRequest();
+            }
+
+            var campaign = await _unitOfWork.Campaigns.GetByIdAsync(id.Value);
+            var testCenter = await _unitOfWork.TestCenters.GetByIdAsync(testCenterIdToRemove.Value);
+
+            if (campaign != null && testCenter != null)
+            {
+                try
+                {
+                    testCenter.AvailableCampaigns.Remove(campaign);
+                    return Ok(await _unitOfWork.SaveChangesAsync());
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
         }
     }
 }

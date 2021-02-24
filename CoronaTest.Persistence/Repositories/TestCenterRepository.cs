@@ -93,6 +93,7 @@ namespace CoronaTest.Persistence.Repositories
         public async Task<TestCenter> GetByIdAsync(int id)
             => await _dbContext
                 .TestCenters
+                .Include(_ => _.AvailableCampaigns)
                 .SingleOrDefaultAsync(_ => _.Id == id);
 
         public async Task<int> GetCountAsync()
