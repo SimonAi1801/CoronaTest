@@ -29,6 +29,12 @@ namespace CoronaTest.Persistence.Repositories
                 .Examinations
                 .AddRangeAsync(examinations);
 
+        public async Task<Examination[]> GetByCamapignIdAsync(int campaignId)
+        => await _dbContext.Examinations
+                           .Include(e => e.Campaign)
+                           .Where(e => e.Campaign.Id == campaignId)
+                           .ToArrayAsync();
+
         public async Task<Examination[]> GetByCampaignTestCenter(Campaign campaign, TestCenter testCenter)
             => await _dbContext
                 .Examinations

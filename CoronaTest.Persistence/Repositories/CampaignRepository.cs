@@ -43,5 +43,11 @@ namespace CoronaTest.Persistence.Repositories
             => await _dbContext
                 .Campaigns
                 .CountAsync();
+
+        public void Remove(Campaign campaign)
+        => _dbContext.Remove(campaign);
+
+        public void Update(Campaign modifiedCampaign)
+        => _dbContext.Campaigns.Update(modifiedCampaign);
     }
 }

@@ -32,8 +32,17 @@ namespace CoronaTest.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Get()
         {
-            throw new NotImplementedException();
+            var campaigns = await _unitOfWork.Campaigns.GetAllAsync();
+
+            return Ok(campaigns.Select(c => new CampaignDto 
+            {
+                Id = c.Id,
+                Name = c.Name,
+                From = c.From,
+                To = c.To
+            }).ToArray());
         }
+
 
         /// <summary>
         /// Liefert die Kampagne mit der übergebenen Id.
@@ -44,9 +53,27 @@ namespace CoronaTest.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(int? id)
         {
-            throw new NotImplementedException();
+            if (id == null)
+            {
+                return BadRequest();
+            }
+
+            var campaign = await _unitOfWork.Campaigns.GetByIdAsync(id.Value);
+
+            if (campaign == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(new CampaignDto
+            {
+                Id = campaign.Id,
+                Name = campaign.Name,
+                From = campaign.From,
+                To = campaign.To
+            });
         }
 
         /// <summary>
@@ -58,9 +85,32 @@ namespace CoronaTest.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetExaminationsByCampaignId(int id)
+        public async Task<IActionResult> GetExaminationsByCampaignId(int? id)
         {
-            throw new NotImplementedException();
+            if (id == null)
+            {
+                return BadRequest();
+            }
+
+            var examinations = await _unitOfWork.Examinations.GetByCamapignIdAsync(id.Value);
+
+            if (examinations == null)
+            {
+                return NotFound();
+            }
+
+            var examinationsDto = examinations.Select(e => new ExaminationDto
+            {
+                Identifier = e.Identifier,
+                ExaminationAt = e.ExaminationAt,
+                Participant = e.Participant,
+                ParticipantId = e.Participant.Id,
+                TestCenter = e.TestCenter,
+                TestCenterId = e.TestCenter.Id,
+                TestResult = e.TestResult
+            }).ToArray();
+
+            return Ok(examinationsDto);
         }
 
         /// <summary>
@@ -72,23 +122,139 @@ namespace CoronaTest.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<TestCenterDto[]> GetTestCentersByCampaignId(int id)
+        public async Task<IActionResult> GetTestCentersByCampaignId(int? id)
         {
-            throw new NotImplementedException();
+            if (id == null)
+            {
+                return BadRequest();
+            }
+
+            var testCenter = await _unitOfWork.TestCenters.GetByCampaignIdAsync(id.Value);
+
+            if (testCenter == null)
+            {
+                return NotFound();
+            }
+
+            var testCenterDto = testCenter.Select(t => new TestCenterDto
+            {
+                Name = t.Name,
+                SlotCapacity = t.SlotCapacity,
+                Street = t.Street,
+                City = t.City,
+                Postalcode = t.Postalcode
+            }).ToArray();
+
+            return Ok(testCenterDto);
         }
 
         /// <summary>
         /// Erstellt eine neue Kampagne
         /// </summary>
-        /// <param name="campaignDto">CampaignDto</param>
+        /// <param name="campaign">Campaign</param>
         /// <returns>CampaignDto</returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> CreateCampaign(CampaignDto campaignDto)
+        public async Task<IActionResult> CreateCampaign(Campaign campaign)
         {
-            throw new NotImplementedException();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                await _unitOfWork.Campaigns.AddAsync(campaign);
+                await _unitOfWork.SaveChangesAsync();
+
+                return CreatedAtAction(
+                    nameof(Get),
+                    new { id = campaign.Id },
+                    campaign);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Ändert eine Kampagne
+        /// </summary>
+        /// <param name="id">campaignId</param>
+        /// <param name="campaign">campaignDto</param>
+        /// <returns>campaignId</returns>
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateCampaign(int? id, Campaign campaign)
+        {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+
+            var campaignInDb = await _unitOfWork.Campaigns.GetByIdAsync(id.Value);
+
+            if (campaignInDb != null)
+            {
+                campaignInDb.Name = campaign.Name;
+                campaignInDb.From = campaign.From;
+                campaignInDb.To = campaign.To;
+
+                try
+                {
+                    _unitOfWork.Campaigns.Update(campaignInDb);
+                    return Ok(await _unitOfWork.SaveChangesAsync());
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        /// <summary>
+        /// Löscht eine bestimmte Kampagne
+        /// </summary>
+        /// <param name="id">campaignId</param>
+        /// <returns></returns>
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteCampaign(int? id)
+        {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+
+            var campaign = await _unitOfWork.Campaigns.GetByIdAsync(id.Value);
+
+            if (campaign != null)
+            {
+                try
+                {
+                    _unitOfWork.Campaigns.Remove(campaign);
+                    return Ok(await _unitOfWork.SaveChangesAsync());
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+            else 
+            {
+                return NotFound();
+            }
         }
 
         /// <summary>
@@ -102,35 +268,6 @@ namespace CoronaTest.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> AddCampaignToTestCenter(int id, int testCenterIdToAdd)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Ändert eine Kampagne
-        /// </summary>
-        /// <param name="id">campaignId</param>
-        /// <param name="campaignDto">campaignDto</param>
-        /// <returns>campaignId</returns>
-        [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateCampaign(int id, CampaignDto campaignDto)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Löscht eine bestimmte Kampagne
-        /// </summary>
-        /// <param name="id">campaignId</param>
-        /// <returns></returns>
-        [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteCampaign(int id)
         {
             throw new NotImplementedException();
         }
