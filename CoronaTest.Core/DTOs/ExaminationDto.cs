@@ -18,5 +18,6 @@ namespace CoronaTest.Core.DTOs
         public int TestCenterId { get; set; }
         public DateTime ExaminationAt { get; set; }
         public TestResults TestResult { get; set; }
+        public ExaminationStates ExaminationState { get; set; }
     }
 }

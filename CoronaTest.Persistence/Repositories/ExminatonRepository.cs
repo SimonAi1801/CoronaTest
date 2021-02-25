@@ -45,7 +45,8 @@ namespace CoronaTest.Persistence.Repositories
                     ParticipantId = e.Participant.Id,
                     TestCenter = e.TestCenter,
                     TestCenterId = e.TestCenter.Id,
-                    TestResult = e.TestResult
+                    TestResult = e.TestResult,
+                    ExaminationState = e.ExaminationState
                 })
                 .ToArrayAsync();
 
@@ -66,7 +67,8 @@ namespace CoronaTest.Persistence.Repositories
                     ParticipantId = e.Participant.Id,
                     TestCenter = e.TestCenter,
                     TestCenterId = e.TestCenter.Id,
-                    TestResult = e.TestResult
+                    TestResult = e.TestResult,
+                    ExaminationState = e.ExaminationState
                 })
                 .ToArrayAsync();
 
@@ -88,7 +90,8 @@ namespace CoronaTest.Persistence.Repositories
                     ParticipantId = e.Participant.Id,
                     TestCenter = e.TestCenter,
                     TestCenterId = e.TestCenter.Id,
-                    TestResult = e.TestResult
+                    TestResult = e.TestResult,
+                    ExaminationState = e.ExaminationState
                 })
                 .OrderBy(_ => _.ExaminationAt)
                 .ToArrayAsync();
@@ -110,7 +113,8 @@ namespace CoronaTest.Persistence.Repositories
                     ParticipantId = e.Participant.Id,
                     TestCenter = e.TestCenter,
                     TestCenterId = e.TestCenter.Id,
-                    TestResult = e.TestResult
+                    TestResult = e.TestResult,
+                    ExaminationState = e.ExaminationState
                 })
                 .SingleOrDefaultAsync(_ => _.Id == id);
 
@@ -131,7 +135,8 @@ namespace CoronaTest.Persistence.Repositories
                     ParticipantId = e.Participant.Id,
                     TestCenter = e.TestCenter,
                     TestCenterId = e.TestCenter.Id,
-                    TestResult = e.TestResult
+                    TestResult = e.TestResult,
+                    ExaminationState = e.ExaminationState
                 })
                 .SingleOrDefaultAsync(_ => _.Identifier == identifier);
 
@@ -153,7 +158,8 @@ namespace CoronaTest.Persistence.Repositories
                     ParticipantId = e.Participant.Id,
                     TestCenter = e.TestCenter,
                     TestCenterId = e.TestCenter.Id,
-                    TestResult = e.TestResult
+                    TestResult = e.TestResult,
+                    ExaminationState = e.ExaminationState
                 })
                 .OrderBy(_ => _.ExaminationAt)
                 .ToArrayAsync();
@@ -188,7 +194,8 @@ namespace CoronaTest.Persistence.Repositories
                     ParticipantId = e.Participant.Id,
                     TestCenter = e.TestCenter,
                     TestCenterId = e.TestCenter.Id,
-                    TestResult = e.TestResult
+                    TestResult = e.TestResult,
+                    ExaminationState = e.ExaminationState
                 }).ToArrayAsync();
         }
 

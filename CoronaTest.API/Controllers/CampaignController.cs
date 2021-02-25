@@ -1,4 +1,5 @@
 ﻿using CoronaTest.Core.Contracts;
+using CoronaTest.Core.DTOs;
 using CoronaTest.Core.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -122,16 +123,23 @@ namespace CoronaTest.API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> CreateCampaign(Campaign campaign)
+        public async Task<IActionResult> CreateCampaign(CampaignDto campaign)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
 
+            var newCampaign = new Campaign
+            {
+                Name = campaign.Name,
+                From = campaign.From,
+                To = campaign.To
+            };
+
             try
             {
-                await _unitOfWork.Campaigns.AddAsync(campaign);
+                await _unitOfWork.Campaigns.AddAsync(newCampaign);
                 await _unitOfWork.SaveChangesAsync();
 
                 return CreatedAtAction(

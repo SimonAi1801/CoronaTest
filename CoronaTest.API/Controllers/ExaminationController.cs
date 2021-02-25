@@ -1,5 +1,6 @@
 ﻿using CoronaTest.Core.Contracts;
 using CoronaTest.Core.DTOs;
+using CoronaTest.Core.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -95,7 +96,36 @@ namespace CoronaTest.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> CreateExamination(ExaminationDto examinationDto)
         {
-            throw new NotImplementedException();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var newExamination = new Examination
+            {
+                ExaminationAt = examinationDto.ExaminationAt,
+                ExaminationState = examinationDto.ExaminationState,
+                Campaign = examinationDto.Campaign,
+                TestCenter = examinationDto.TestCenter,
+                Identifier = examinationDto.Identifier,
+                Participant = examinationDto.Participant,
+                TestResult = examinationDto.TestResult
+            };
+
+            try
+            {
+                await _unitOfWork.Examinations.AddAsync(newExamination);
+                await _unitOfWork.SaveChangesAsync();
+
+                return CreatedAtAction(
+                    nameof(Get),
+                    new { id = newExamination.Id },
+                    newExamination);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         /// <summary>
@@ -125,6 +155,7 @@ namespace CoronaTest.API.Controllers
                 examinationInDb.TestResult = examinationDto.TestResult;
                 examinationInDb.Campaign = examinationDto.Campaign;
                 examinationInDb.ExaminationAt = examinationDto.ExaminationAt;
+                examinationInDb.ExaminationState = examinationDto.ExaminationState;
                 try
                 {
                     _unitOfWork.Examinations.Update(examinationInDb);
@@ -150,9 +181,31 @@ namespace CoronaTest.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteExamination(int id)
+        public async Task<IActionResult> DeleteExamination(int? id)
         {
-            throw new NotImplementedException();
+            if (id == null)
+            {
+                return BadRequest();
+            }
+
+            var examination = await _unitOfWork.Campaigns.GetByIdAsync(id.Value);
+
+            if (examination != null)
+            {
+                try
+                {
+                    _unitOfWork.Campaigns.Remove(examination);
+                    return Ok(await _unitOfWork.SaveChangesAsync());
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
         }
     }
 }
