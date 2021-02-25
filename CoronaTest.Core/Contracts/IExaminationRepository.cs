@@ -21,5 +21,6 @@ namespace CoronaTest.Core.Contracts
         Task<ExaminationDto[]> GetByCamapignIdAsync(int campaignId);
         Task<ExaminationDto[]> GetAllAsync();
         void Update(Examination examination);
+        Task<ExaminationDto[]> GetByTestCenterIdAsync(int value);
     }
 }

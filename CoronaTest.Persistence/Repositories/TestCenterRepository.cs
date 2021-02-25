@@ -29,6 +29,18 @@ namespace CoronaTest.Persistence.Repositories
                 .TestCenters
                 .AddRangeAsync(testCenters);
 
+        public async Task<TestCenterDto[]> GetAllAsync()
+        => await _dbContext.TestCenters
+                .Select(t => new TestCenterDto
+                {
+                    Id = t.Id,
+                    SlotCapacity = t.SlotCapacity,
+                    Street = t.Street,
+                    City = t.City,
+                    Name = t.Name,
+                    Postalcode = t.Postalcode
+                }).ToArrayAsync();
+
         public async Task<IEnumerable<SlotDto>> GetAllSlotsByCampaignIdAsync(int campaignId, int testCenterId)
         {
             int slotDuration = 15;
@@ -96,9 +108,40 @@ namespace CoronaTest.Persistence.Repositories
                 .Include(_ => _.AvailableCampaigns)
                 .SingleOrDefaultAsync(_ => _.Id == id);
 
+        public async Task<TestCenterDto[]> GetByPostalCodeAsync(string postalCode)
+        => await _dbContext.TestCenters
+                .Where(t => t.Postalcode.Equals(postalCode))
+                .Select(t => new TestCenterDto
+                {
+                    Id = t.Id,
+                    SlotCapacity = t.SlotCapacity,
+                    Street = t.Street,
+                    City = t.City,
+                    Name = t.Name,
+                    Postalcode = t.Postalcode
+                }).ToArrayAsync();
+
         public async Task<int> GetCountAsync()
             => await _dbContext
                 .TestCenters
                 .CountAsync();
+
+        public async Task<TestCenterDto> GetDtoByIdAsync(int id)
+        => await _dbContext.TestCenters
+                .Select(t => new TestCenterDto
+                {
+                    Id = t.Id,
+                    SlotCapacity = t.SlotCapacity,
+                    Street = t.Street,
+                    City = t.City,
+                    Name = t.Name,
+                    Postalcode = t.Postalcode
+                }).SingleOrDefaultAsync(t => t.Id == id);
+
+        public void Remove(TestCenter testCenter)
+        => _dbContext.TestCenters.Remove(testCenter);
+
+        public void Update(TestCenter tesCenter)
+        => _dbContext.TestCenters.Update(tesCenter);
     }
 }

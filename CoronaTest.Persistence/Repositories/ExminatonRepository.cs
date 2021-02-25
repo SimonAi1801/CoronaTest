@@ -209,5 +209,25 @@ namespace CoronaTest.Persistence.Repositories
 
         public async Task<Examination> GetByIdAsync(int id)
         => await _dbContext.Examinations.SingleOrDefaultAsync(e => e.Id == id);
+
+        public async Task<ExaminationDto[]> GetByTestCenterIdAsync(int id)
+        => await _dbContext.Examinations
+                 .Include(_ => _.Campaign)
+                 .Include(_ => _.Participant)
+                 .Include(_ => _.TestCenter)
+                 .Where(e => e.TestCenter.Id == id)
+                 .Select(e => new ExaminationDto
+                 {
+                     Campaign = e.Campaign,
+                     ExaminationAt = e.ExaminationAt,
+                     CampaignId = e.Campaign.Id,
+                     Identifier = e.Identifier,
+                     Participant = e.Participant,
+                     ParticipantId = e.Participant.Id,
+                     TestCenter = e.TestCenter,
+                     TestCenterId = e.TestCenter.Id,
+                     TestResult = e.TestResult,
+                     ExaminationState = e.ExaminationState
+                 }).ToArrayAsync();
     }
 }

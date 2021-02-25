@@ -1,5 +1,6 @@
 ﻿using CoronaTest.Core.Contracts;
 using CoronaTest.Core.DTOs;
+using CoronaTest.Core.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -27,9 +28,7 @@ namespace CoronaTest.API.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Get()
-        {
-            throw new NotImplementedException();
-        }
+        => Ok(await _unitOfWork.TestCenters.GetAllAsync());
 
         /// <summary>
         /// Liefert ein Testcenter zur Id
@@ -40,9 +39,21 @@ namespace CoronaTest.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(int? id)
         {
-            throw new NotImplementedException();
+            if (id == null)
+            {
+                return BadRequest();
+            }
+
+            var testCenter = await _unitOfWork.TestCenters.GetDtoByIdAsync(id.Value);
+
+            if (testCenter == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(testCenter);
         }
 
         /// <summary>
@@ -56,7 +67,19 @@ namespace CoronaTest.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetByPostalCode(string postalCode)
         {
-            throw new NotImplementedException();
+            if (postalCode == null)
+            {
+                return BadRequest();
+            }
+
+            var testCenters = await _unitOfWork.TestCenters.GetByPostalCodeAsync(postalCode);
+
+            if (testCenters == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(testCenters);
         }
 
         /// <summary>
@@ -68,9 +91,21 @@ namespace CoronaTest.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetExaminationsByTestCenterId(int id)
+        public async Task<IActionResult> GetExaminationsByTestCenterId(int? id)
         {
-            throw new NotImplementedException();
+            if (id == null)
+            {
+                return BadRequest();
+            }
+
+            var examinations = await _unitOfWork.Examinations.GetByTestCenterIdAsync(id.Value);
+
+            if (examinations == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(examinations);
         }
 
         /// <summary>
@@ -84,7 +119,34 @@ namespace CoronaTest.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> CreateTestCenter(TestCenterDto testCenterDto)
         {
-            throw new NotImplementedException();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var newTestCenter = new TestCenter
+            {
+                City = testCenterDto.City,
+                SlotCapacity = testCenterDto.SlotCapacity,
+                Street = testCenterDto.Street,
+                Name = testCenterDto.Name,
+                Postalcode = testCenterDto.Postalcode
+            };
+
+            try
+            {
+                await _unitOfWork.TestCenters.AddAsync(newTestCenter);
+                await _unitOfWork.SaveChangesAsync();
+
+                return CreatedAtAction(
+                    nameof(Get),
+                    new { id = newTestCenter.Id },
+                    newTestCenter);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         /// <summary>
@@ -97,9 +159,37 @@ namespace CoronaTest.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateTestCenter(int id, TestCenterDto testCenterDto)
+        public async Task<IActionResult> UpdateTestCenter(int? id, TestCenterDto testCenterDto)
         {
-            throw new NotImplementedException();
+            if (id == null)
+            {
+                return BadRequest();
+            }
+
+            var tesCenterInDb = await _unitOfWork.TestCenters.GetByIdAsync(id.Value);
+
+            if (tesCenterInDb != null)
+            {
+                tesCenterInDb.City = testCenterDto.City;
+                tesCenterInDb.SlotCapacity = testCenterDto.SlotCapacity;
+                tesCenterInDb.Street = testCenterDto.Street;
+                tesCenterInDb.Name = testCenterDto.Name;
+                tesCenterInDb.Postalcode = testCenterDto.Postalcode;
+
+                try
+                {
+                    _unitOfWork.TestCenters.Update(tesCenterInDb);
+                    return Ok(await _unitOfWork.SaveChangesAsync());
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         /// <summary>
@@ -111,9 +201,31 @@ namespace CoronaTest.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult>RemoveTestCenter(int id)
+        public async Task<IActionResult>RemoveTestCenter(int? id)
         {
-            throw new NotImplementedException();
+            if (id == null)
+            {
+                return BadRequest();
+            }
+
+            var testCenter = await _unitOfWork.TestCenters.GetByIdAsync(id.Value);
+
+            if (testCenter != null)
+            {
+                try
+                {
+                    _unitOfWork.TestCenters.Remove(testCenter);
+                    return Ok(await _unitOfWork.SaveChangesAsync());
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
         }
     }
 }

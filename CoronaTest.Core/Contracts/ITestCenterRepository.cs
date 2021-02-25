@@ -15,5 +15,10 @@ namespace CoronaTest.Core.Contracts
         Task<TestCenter[]> GetByCampaignIdAsync(int campaignId);
         Task<TestCenter> GetByIdAsync(int id);
         Task<IEnumerable<SlotDto>> GetAllSlotsByCampaignIdAsync(int campaignId, int testCenterId);
+        Task<TestCenterDto[]> GetAllAsync();
+        Task<TestCenterDto> GetDtoByIdAsync(int id);
+        Task<TestCenterDto[]> GetByPostalCodeAsync(string postalCode);
+        void Update(TestCenter tesCenter);
+        void Remove(TestCenter testCenter);
     }
 }
