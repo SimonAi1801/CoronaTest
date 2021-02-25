@@ -1,5 +1,4 @@
-﻿using CoronaTest.API.DTOs;
-using CoronaTest.Core.Contracts;
+﻿using CoronaTest.Core.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;

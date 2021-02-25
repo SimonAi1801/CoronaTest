@@ -1,4 +1,5 @@
 ﻿using CoronaTest.Core.Contracts;
+using CoronaTest.Core.DTOs;
 using CoronaTest.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -28,15 +29,29 @@ namespace CoronaTest.Persistence.Repositories
                 .Campaigns
                 .AddRangeAsync(campaigns);
 
-        public async Task<Campaign[]> GetAllAsync()
+        public async Task<CampaignDto[]> GetAllAsync()
             => await _dbContext
                 .Campaigns
+                .Select(c => new CampaignDto
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    From = c.From,
+                    To = c.To
+                })
                 .OrderBy(c => c.Name)
                 .ToArrayAsync();
 
-        public async Task<Campaign> GetByIdAsync(int id)
+        public async Task<CampaignDto> GetDtoByIdAsync(int id)
             => await _dbContext
                 .Campaigns
+                .Select(c => new CampaignDto
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    From = c.From,
+                    To = c.To
+                })
                 .SingleOrDefaultAsync(c => c.Id == id);
 
         public async Task<int> GetCountAsync()
@@ -49,5 +64,8 @@ namespace CoronaTest.Persistence.Repositories
 
         public void Update(Campaign modifiedCampaign)
         => _dbContext.Campaigns.Update(modifiedCampaign);
+
+        public async Task<Campaign> GetByIdAsync(int id)
+        => await _dbContext.Campaigns.SingleOrDefaultAsync(c => c.Id == id);
     }
 }

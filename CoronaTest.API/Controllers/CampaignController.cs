@@ -1,5 +1,4 @@
-﻿using CoronaTest.API.DTOs;
-using CoronaTest.Core.Contracts;
+﻿using CoronaTest.Core.Contracts;
 using CoronaTest.Core.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -32,15 +31,7 @@ namespace CoronaTest.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Get()
         {
-            var campaigns = await _unitOfWork.Campaigns.GetAllAsync();
-
-            return Ok(campaigns.Select(c => new CampaignDto 
-            {
-                Id = c.Id,
-                Name = c.Name,
-                From = c.From,
-                To = c.To
-            }).ToArray());
+            return Ok(await _unitOfWork.Campaigns.GetAllAsync());
         }
 
 
@@ -60,20 +51,14 @@ namespace CoronaTest.API.Controllers
                 return BadRequest();
             }
 
-            var campaign = await _unitOfWork.Campaigns.GetByIdAsync(id.Value);
+            var campaign = await _unitOfWork.Campaigns.GetDtoByIdAsync(id.Value);
 
             if (campaign == null)
             {
                 return NotFound();
             }
 
-            return Ok(new CampaignDto
-            {
-                Id = campaign.Id,
-                Name = campaign.Name,
-                From = campaign.From,
-                To = campaign.To
-            });
+            return Ok(campaign);
         }
 
         /// <summary>
@@ -99,18 +84,7 @@ namespace CoronaTest.API.Controllers
                 return NotFound();
             }
 
-            var examinationsDto = examinations.Select(e => new ExaminationDto
-            {
-                Identifier = e.Identifier,
-                ExaminationAt = e.ExaminationAt,
-                Participant = e.Participant,
-                ParticipantId = e.Participant.Id,
-                TestCenter = e.TestCenter,
-                TestCenterId = e.TestCenter.Id,
-                TestResult = e.TestResult
-            }).ToArray();
-
-            return Ok(examinationsDto);
+            return Ok(examinations);
         }
 
         /// <summary>
@@ -136,16 +110,7 @@ namespace CoronaTest.API.Controllers
                 return NotFound();
             }
 
-            var testCenterDto = testCenter.Select(t => new TestCenterDto
-            {
-                Name = t.Name,
-                SlotCapacity = t.SlotCapacity,
-                Street = t.Street,
-                City = t.City,
-                Postalcode = t.Postalcode
-            }).ToArray();
-
-            return Ok(testCenterDto);
+            return Ok(testCenter);
         }
 
         /// <summary>

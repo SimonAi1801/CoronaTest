@@ -29,39 +29,132 @@ namespace CoronaTest.Persistence.Repositories
                 .Examinations
                 .AddRangeAsync(examinations);
 
-        public async Task<Examination[]> GetByCamapignIdAsync(int campaignId)
+        public async Task<ExaminationDto[]> GetAllAsync()
         => await _dbContext.Examinations
-                           .Include(e => e.Campaign)
-                           .Where(e => e.Campaign.Id == campaignId)
-                           .ToArrayAsync();
+                .Include(e => e.Campaign)
+                .Include(e => e.Participant)
+                .Include(e => e.TestCenter)
+                .Select(e => new ExaminationDto
+                {
+                    Id = e.Id,
+                    Campaign = e.Campaign,
+                    CampaignId = e.Campaign.Id,
+                    ExaminationAt = e.ExaminationAt,
+                    Identifier = e.Identifier,
+                    Participant = e.Participant,
+                    ParticipantId = e.Participant.Id,
+                    TestCenter = e.TestCenter,
+                    TestCenterId = e.TestCenter.Id,
+                    TestResult = e.TestResult
+                })
+                .ToArrayAsync();
 
-        public async Task<Examination[]> GetByCampaignTestCenter(Campaign campaign, TestCenter testCenter)
+        public async Task<ExaminationDto[]> GetByCamapignIdAsync(int campaignId)
+        => await _dbContext.Examinations
+                .Include(e => e.Campaign)
+                .Include(e => e.Participant)
+                .Include(e => e.TestCenter)
+                .Where(e => e.Campaign.Id == campaignId)
+                .Select(e => new ExaminationDto
+                {
+                    Id = e.Id,
+                    Campaign = e.Campaign,
+                    CampaignId = e.Campaign.Id,
+                    ExaminationAt = e.ExaminationAt,
+                    Identifier = e.Identifier,
+                    Participant = e.Participant,
+                    ParticipantId = e.Participant.Id,
+                    TestCenter = e.TestCenter,
+                    TestCenterId = e.TestCenter.Id,
+                    TestResult = e.TestResult
+                })
+                .ToArrayAsync();
+
+        public async Task<ExaminationDto[]> GetByCampaignAndTestCenter(Campaign campaign, TestCenter testCenter)
             => await _dbContext
                 .Examinations
+                .Include(e => e.Campaign)
+                .Include(e => e.Participant)
+                .Include(e => e.TestCenter)
                 .Where(_ => _.Campaign == campaign && _.TestCenter == testCenter)
+                .Select(e => new ExaminationDto
+                {
+                    Id = e.Id,
+                    Campaign = e.Campaign,
+                    CampaignId = e.Campaign.Id,
+                    ExaminationAt = e.ExaminationAt,
+                    Identifier = e.Identifier,
+                    Participant = e.Participant,
+                    ParticipantId = e.Participant.Id,
+                    TestCenter = e.TestCenter,
+                    TestCenterId = e.TestCenter.Id,
+                    TestResult = e.TestResult
+                })
                 .OrderBy(_ => _.ExaminationAt)
                 .ToArrayAsync();
 
-        public async Task<Examination> GetByIdAsync(int id)
+        public async Task<ExaminationDto> GetDtoByIdAsync(int id)
             => await _dbContext
                 .Examinations
                 .Include(_ => _.TestCenter)
                 .Include(_ => _.Campaign)
                 .Include(_ => _.Participant)
+                .Select(e => new ExaminationDto
+                {
+                    Id = e.Id,
+                    Campaign = e.Campaign,
+                    CampaignId = e.Campaign.Id,
+                    ExaminationAt = e.ExaminationAt,
+                    Identifier = e.Identifier,
+                    Participant = e.Participant,
+                    ParticipantId = e.Participant.Id,
+                    TestCenter = e.TestCenter,
+                    TestCenterId = e.TestCenter.Id,
+                    TestResult = e.TestResult
+                })
                 .SingleOrDefaultAsync(_ => _.Id == id);
 
-        public async Task<Examination> GetByIdentifierAsync(string identifier)
+        public async Task<ExaminationDto> GetByIdentifierAsync(string identifier)
             => await _dbContext
                 .Examinations
+                .Include(_ => _.TestCenter)
+                .Include(_ => _.Campaign)
                 .Include(_ => _.Participant)
+                .Select(e => new ExaminationDto
+                {
+                    Id = e.Id,
+                    Campaign = e.Campaign,
+                    CampaignId = e.Campaign.Id,
+                    ExaminationAt = e.ExaminationAt,
+                    Identifier = e.Identifier,
+                    Participant = e.Participant,
+                    ParticipantId = e.Participant.Id,
+                    TestCenter = e.TestCenter,
+                    TestCenterId = e.TestCenter.Id,
+                    TestResult = e.TestResult
+                })
                 .SingleOrDefaultAsync(_ => _.Identifier == identifier);
 
-        public async Task<Examination[]> GetByParticipantIdAsync(int participantId)
+        public async Task<ExaminationDto[]> GetByParticipantIdAsync(int participantId)
             => await _dbContext
                 .Examinations
-                .Include(_ => _.Campaign)
                 .Include(_ => _.TestCenter)
+                .Include(_ => _.Campaign)
+                .Include(_ => _.Participant)
                 .Where(_ => _.Participant.Id == participantId)
+                .Select(e => new ExaminationDto
+                {
+                    Id = e.Id,
+                    Campaign = e.Campaign,
+                    CampaignId = e.Campaign.Id,
+                    ExaminationAt = e.ExaminationAt,
+                    Identifier = e.Identifier,
+                    Participant = e.Participant,
+                    ParticipantId = e.Participant.Id,
+                    TestCenter = e.TestCenter,
+                    TestCenterId = e.TestCenter.Id,
+                    TestResult = e.TestResult
+                })
                 .OrderBy(_ => _.ExaminationAt)
                 .ToArrayAsync();
 
@@ -70,6 +163,8 @@ namespace CoronaTest.Persistence.Repositories
             var query = _dbContext
                 .Examinations
                 .Include(_ => _.Participant)
+                .Include(_ => _.TestCenter)
+                .Include(_ => _.Campaign)
                 .AsQueryable();
 
             if (from != null)
@@ -83,13 +178,29 @@ namespace CoronaTest.Persistence.Repositories
 
             return await query
                 .OrderBy(_ => _.ExaminationAt)
-                .Select(_ => new ExaminationDto(_))
-                .ToArrayAsync();
+                .Select(e => new ExaminationDto
+                {
+                    Campaign = e.Campaign,
+                    ExaminationAt = e.ExaminationAt,
+                    CampaignId = e.Campaign.Id,
+                    Identifier = e.Identifier,
+                    Participant = e.Participant,
+                    ParticipantId = e.Participant.Id,
+                    TestCenter = e.TestCenter,
+                    TestCenterId = e.TestCenter.Id,
+                    TestResult = e.TestResult
+                }).ToArrayAsync();
         }
 
         public void Remove(Examination examination)
             => _dbContext
                 .Examinations
                 .Remove(examination);
+
+        public void Update(Examination examination)
+        => _dbContext.Examinations.Update(examination);
+
+        public async Task<Examination> GetByIdAsync(int id)
+        => await _dbContext.Examinations.SingleOrDefaultAsync(e => e.Id == id);
     }
 }

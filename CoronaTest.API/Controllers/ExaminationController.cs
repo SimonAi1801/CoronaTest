@@ -1,5 +1,5 @@
-﻿using CoronaTest.API.DTOs;
-using CoronaTest.Core.Contracts;
+﻿using CoronaTest.Core.Contracts;
+using CoronaTest.Core.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -28,7 +28,7 @@ namespace CoronaTest.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Get()
         {
-            throw new NotImplementedException();
+            return Ok(await _unitOfWork.Examinations.GetAllAsync());
         }
 
         /// <summary>
@@ -40,9 +40,21 @@ namespace CoronaTest.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(int? id)
         {
-            throw new NotImplementedException();
+            if (id == null)
+            {
+                return BadRequest();
+            }
+
+            var examination = await _unitOfWork.Examinations.GetDtoByIdAsync(id.Value);
+
+            if (examination == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(examination);
         }
 
         /// <summary>
@@ -57,7 +69,19 @@ namespace CoronaTest.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetExaminationByTimeSpan(DateTime from, DateTime to)
         {
-            throw new NotImplementedException();
+            if (from == null || to == null)
+            {
+                return BadRequest();
+            }
+
+            var examinations = await _unitOfWork.Examinations.GetExaminationsWithFilterAsync(from, to);
+
+            if (examinations == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(examinations);
         }
 
         /// <summary>
@@ -84,9 +108,37 @@ namespace CoronaTest.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateExamination(int id, ExaminationDto examinationDto)
+        public async Task<IActionResult> UpdateExamination(int? id, ExaminationDto examinationDto)
         {
-            throw new NotImplementedException();
+            if (id == null)
+            {
+                return BadRequest();
+            }
+
+            var examinationInDb = await _unitOfWork.Examinations.GetByIdAsync(id.Value);
+
+            if (examinationInDb != null)
+            {
+                examinationInDb.Identifier = examinationDto.Identifier;
+                examinationInDb.Participant = examinationDto.Participant;
+                examinationInDb.TestCenter = examinationDto.TestCenter;
+                examinationInDb.TestResult = examinationDto.TestResult;
+                examinationInDb.Campaign = examinationDto.Campaign;
+                examinationInDb.ExaminationAt = examinationDto.ExaminationAt;
+                try
+                {
+                    _unitOfWork.Examinations.Update(examinationInDb);
+                    return Ok(await _unitOfWork.SaveChangesAsync());
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
-﻿using CoronaTest.Core.Entities;
+﻿using CoronaTest.Core.DTOs;
+using CoronaTest.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,9 +12,10 @@ namespace CoronaTest.Core.Contracts
         Task AddAsync(Campaign campaign);
         Task AddRangeAsync(Campaign[] campaigns);
         Task<int> GetCountAsync();
-        Task<Campaign[]> GetAllAsync();
-        Task<Campaign> GetByIdAsync(int id);
+        Task<CampaignDto[]> GetAllAsync();
+        Task<CampaignDto> GetDtoByIdAsync(int id);
         void Update(Campaign modifiedCampaign);
         void Remove(Campaign campaign);
+        Task<Campaign> GetByIdAsync(int id);
     }
 }

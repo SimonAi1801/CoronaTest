@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace CoronaTest.API.DTOs
+namespace CoronaTest.Core.DTOs
 {
     public class CampaignDto
     {

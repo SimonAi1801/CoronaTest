@@ -11,12 +11,15 @@ namespace CoronaTest.Core.Contracts
     {
         Task AddAsync(Examination examination);
         Task AddRangeAsync(Examination[] examinations);
-        Task<Examination[]> GetByCampaignTestCenter(Campaign campaign, TestCenter testCenter);
-        Task<Examination[]> GetByParticipantIdAsync(int participantId);
+        Task<ExaminationDto[]> GetByCampaignAndTestCenter(Campaign campaign, TestCenter testCenter);
+        Task<ExaminationDto[]> GetByParticipantIdAsync(int participantId);
         Task<Examination> GetByIdAsync(int id);
+        Task<ExaminationDto> GetDtoByIdAsync(int id);
         void Remove(Examination examination);
         Task<ExaminationDto[]> GetExaminationsWithFilterAsync(DateTime? from = null, DateTime? to = null);
-        Task<Examination> GetByIdentifierAsync(string identifier);
-        Task<Examination[]> GetByCamapignIdAsync(int campaignId);
+        Task<ExaminationDto> GetByIdentifierAsync(string identifier);
+        Task<ExaminationDto[]> GetByCamapignIdAsync(int campaignId);
+        Task<ExaminationDto[]> GetAllAsync();
+        void Update(Examination examination);
     }
 }
