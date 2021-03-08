@@ -60,6 +60,47 @@ namespace CoronaTest.API.Controllers
             return response;
         }
 
+        /// <summary>
+        /// Neuen Benutzer registrieren. Bekommt noch keine Rolle zugewiesen.
+        /// </summary>
+        /// <param name="eMail"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("register")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult PostNewUser(string eMail, string password)
+        {
+            if (string.IsNullOrEmpty(eMail) || string.IsNullOrEmpty(password))
+            {
+                return BadRequest();
+            }
+
+            var newAuthUser = new AuthUser
+            {
+                Email = eMail,
+                Password = AuthUtils.GenerateHashedPassword(password),
+                Role = "User"
+            };
+
+            _users.Add(newAuthUser);
+
+            //try
+            //{
+            //    await _unitOfWork.Users.AddAsync(newAuthUser);
+            //    await _unitOfWork.SaveChangesAsync();
+            //}
+            //catch (Exception ex)
+            //{
+            //    return BadRequest(ex.Message);
+            //}
+
+            //_users.Add(newAuthUser);
+
+            return NoContent();
+        }
+
         private string GenerateJWTToken(AuthUser userInfo)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:SecretKey"]));
