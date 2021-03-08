@@ -1,6 +1,7 @@
 ﻿using CoronaTest.Core.Contracts;
 using CoronaTest.Core.DTOs;
 using CoronaTest.Core.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -29,6 +30,7 @@ namespace CoronaTest.API.Controllers
         /// </summary>
         /// <returns>CampaignDTO</returns>
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Get()
         {
@@ -42,6 +44,7 @@ namespace CoronaTest.API.Controllers
         /// <param name="id">CampaignId</param>
         /// <returns>CampaignDto</returns>
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -68,6 +71,7 @@ namespace CoronaTest.API.Controllers
         /// <param name="id">campaignId</param>
         /// <returns>ExaminationDto</returns>
         [HttpGet("{id}/Examinations")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -94,6 +98,7 @@ namespace CoronaTest.API.Controllers
         /// <param name="id">campaignId</param>
         /// <returns>TestCenterDto</returns>
         [HttpGet("{id}/TestCenters")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -120,6 +125,7 @@ namespace CoronaTest.API.Controllers
         /// <param name="campaign">Campaign</param>
         /// <returns>CampaignDto</returns>
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -160,6 +166,7 @@ namespace CoronaTest.API.Controllers
         /// <param name="campaign">campaignDto</param>
         /// <returns>campaignId</returns>
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -200,6 +207,7 @@ namespace CoronaTest.API.Controllers
         /// <param name="id">campaignId</param>
         /// <returns></returns>
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -237,6 +245,7 @@ namespace CoronaTest.API.Controllers
         /// <param name="testCenterIdToAdd">testCenterId</param>
         /// <returns>CampaignDto</returns>
         [HttpPost("{id}/TestCenters/{testCenterIdToAdd}")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -275,6 +284,7 @@ namespace CoronaTest.API.Controllers
         /// <param name="testCenterIdToRemove">testCenterId</param>
         /// <returns></returns>
         [HttpDelete("{id}/TestCenters/{testCenterIdToRemove}")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

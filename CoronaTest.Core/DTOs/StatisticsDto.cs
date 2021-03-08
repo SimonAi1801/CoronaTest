@@ -6,7 +6,7 @@ namespace CoronaTest.Core.DTOs
 {
     public class StatisticsDto
     {
-        public string Year { get; set; }
+        public int Year { get; set; }
         public int CalenderWeek { get; set; }
         public int CountOfExaminations { get; set; }
         public int CountOfUnkownResults { get; set; }

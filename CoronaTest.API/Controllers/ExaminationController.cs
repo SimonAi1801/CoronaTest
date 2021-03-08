@@ -1,6 +1,7 @@
 ﻿using CoronaTest.Core.Contracts;
 using CoronaTest.Core.DTOs;
 using CoronaTest.Core.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -26,6 +27,7 @@ namespace CoronaTest.API.Controllers
         /// </summary>
         /// <returns>examinationDto[]</returns>
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Get()
         {
@@ -38,6 +40,7 @@ namespace CoronaTest.API.Controllers
         /// <param name="id">examinationId</param>
         /// <returns>examinationDto</returns>
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -65,6 +68,7 @@ namespace CoronaTest.API.Controllers
         /// <param name="to">Endpunkt</param>
         /// <returns>examinationDto[]</returns>
         [HttpGet("{from}/{to}")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -91,6 +95,7 @@ namespace CoronaTest.API.Controllers
         /// <param name="examinationDto">examinationDto</param>
         /// <returns>examinationDto</returns>
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -135,6 +140,7 @@ namespace CoronaTest.API.Controllers
         /// <param name="examinationDto">examinationDto</param>
         /// <returns>examinationId</returns>
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -178,6 +184,7 @@ namespace CoronaTest.API.Controllers
         /// <param name="id">examinationId</param>
         /// <returns>examinationId</returns>
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
