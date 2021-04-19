@@ -27,6 +27,9 @@ namespace CoronaTest.Persistence.Repositories
                 .Participants
                 .AddRangeAsync(participants);
 
+        public async Task<Participant[]> GetAllAsync()
+        => await _dbContext.Participants.ToArrayAsync();
+
         public async Task<Participant> GetByIdAsync(int id)
             => await _dbContext
                 .Participants

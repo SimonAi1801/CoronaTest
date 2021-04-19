@@ -1,0 +1,32 @@
+﻿@page
+@model CoronaTest.Web.Pages.Registration.IndexModel
+@{
+}
+
+<div class="container">
+    <a type="button" asp-page="/Registration/UserOverview" class="btn btn-primary">Neue Testung</a>
+    <br />
+    <div class="row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Kampagne</th>
+                    <th>Durchgeführt am</th>
+                    <th>Test Center</th>
+                    <th>Ergebnis</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var examination in Model.Examinations)
+                {
+                    <tr>
+                        <td>@examination.Campaign?.Name</td>
+                        <td>@examination.ExaminationAt.ToLongDateString()</td>
+                        <td>@examination.TestCenter?.Name</td>
+                        <td>@examination.TestResult</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -18,7 +18,6 @@ namespace CoronaTest.Core.Entities
         public string SocialSecurityNumber { get; set; }
         public string Stair { get; set; }
         public string Street { get; set; }
-        public string Verification { get; set; }
 
         public override string ToString()
         {

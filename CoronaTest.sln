@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoronaTest.Web", "CoronaTes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utils", "Utils\Utils.csproj", "{83DBBC1F-5775-47F0-95DC-166E6C2DF6A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoronaTest.API", "CoronaTest.API\CoronaTest.API.csproj", "{53A8F7B7-B583-4DDE-AA20-045DD4C2A03A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoronaTest.API", "CoronaTest.API\CoronaTest.API.csproj", "{53A8F7B7-B583-4DDE-AA20-045DD4C2A03A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

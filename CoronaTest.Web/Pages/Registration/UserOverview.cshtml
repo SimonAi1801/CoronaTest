@@ -1,0 +1,46 @@
+﻿@page
+@model CoronaTest.Web.Pages.Registration.UserOverviewModel
+@{
+}
+
+<div class="container">
+    <div class="row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Geburtstag</th>
+                    <th>Geschlecht</th>
+                    <th>SVNR</th>
+                    <th>Telefonnummer</th>
+                    <th>Stadt</th>
+                    <th>Postleitzahl</th>
+                    <th>Straße</th>
+                    <th>Hausnummer</th>
+                    <th>Stiege</th>
+                    <th>Tür</th>
+                    <th>Reservierung</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var participant in Model.Participants)
+                {
+                    <tr>
+                        <td>@participant.Fullname</td>
+                        <td>@participant.Birthdate</td>
+                        <td>@participant.Gender</td>
+                        <td>@participant.SocialSecurityNumber</td>
+                        <td>@participant.Mobilephone</td>
+                        <td>@participant.City</td>
+                        <td>@participant.Postalcode</td>
+                        <td>@participant.Street</td>
+                        <td>@participant.HouseNumber</td>
+                        <td>@participant.Stair</td>
+                        <td>@participant.Door</td>
+                        <td><button asp-page="./Reservation" asp-route-id="@participant.Id">Reservieren</button></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
