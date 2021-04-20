@@ -32,7 +32,6 @@ namespace CoronaTest.Web.Dtos
         public string Gender { get; set; }
 
         [Required(ErrorMessage = "Die {0} ist verpflichtend")]
-        [StringLength(10, ErrorMessage = "Die {0} muss genau 10 Zeichen lang sein!", MinimumLength = 10)]
         [DisplayName("Sozialversicherungsnummer")]
         public string SocialSecurityNumber { get; set; }
 

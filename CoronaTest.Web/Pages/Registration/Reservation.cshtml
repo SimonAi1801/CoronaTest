@@ -3,3 +3,46 @@
 @{
 }
 
+<h4>Test Reservierung</h4>
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<form method="post">
+    <div>
+        <label asp-for="SelectedCampaignId" class="control-label">Kampagne auswählen</label>
+        <select asp-for="SelectedCampaignId" class="form-control">
+            @foreach (var campaign in Model.Campaigns)
+            {
+                <option value="@campaign.Id">@campaign.Name</option>
+            }
+        </select>
+    </div>
+    <div>
+        <label asp-for="SelectedTestCenterId" class="control-label">2. Untersuchungsort auswählen</label>
+        <select asp-for="SelectedTestCenterId" class="form-control">
+            @foreach (var testCenter in Model.TestCenters)
+            {
+                <option value="@testCenter.Id">@testCenter.Name</option>
+            }
+        </select>
+    </div>
+    <div>
+        <label asp-for="SelectedParticipantId" class="control-label">Benutzer auswählen</label>
+        <select asp-for="SelectedParticipantId" class="form-control">
+            @foreach (var participant in Model.Participants)
+            {
+                <option value="@participant.Id">@participant.Fullname</option>
+            }
+        </select>
+    </div>
+    <div>
+        <label asp-for="Examination.ExaminationAt" class="control-label"></label>
+        <input type="date" asp-for="Examination.ExaminationAt" class="form-control" />
+        <span asp-validation-for="Examination.ExaminationAt" class="text-danger"></span>
+    </div>
+
+
+    <div>
+        <button type="submit" asp-page-handler="Save" class="btn btn-primary">Reservieren</button>
+    </div>
+</form>

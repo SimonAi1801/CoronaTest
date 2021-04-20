@@ -5,10 +5,13 @@
 
 <div class="container">
     <div class="row">
+        <a type="button" class="btn btn-primary" asp-page="/Registration/CreateUser">Benutzer erstellen</a>
+    </div>
+    <div class="row">
         <table class="table">
             <thead>
                 <tr>
-                    <th>Name</th>
+                    <th class="col-sm-4">Name</th>
                     <th>Geburtstag</th>
                     <th>Geschlecht</th>
                     <th>SVNR</th>
@@ -26,8 +29,8 @@
                 @foreach (var participant in Model.Participants)
                 {
                     <tr>
-                        <td>@participant.Fullname</td>
-                        <td>@participant.Birthdate</td>
+                        <td class="col-sm-4">@participant.Fullname</td>
+                        <td>@participant.Birthdate.ToShortDateString()</td>
                         <td>@participant.Gender</td>
                         <td>@participant.SocialSecurityNumber</td>
                         <td>@participant.Mobilephone</td>
@@ -37,7 +40,7 @@
                         <td>@participant.HouseNumber</td>
                         <td>@participant.Stair</td>
                         <td>@participant.Door</td>
-                        <td><button asp-page="./Reservation" asp-route-id="@participant.Id">Reservieren</button></td>
+                        <td><a type="button" class="btn btn-primary" asp-page="/Registration/Reservation" asp-route-id="@participant.Id">Reservieren</a></td>
                     </tr>
                 }
             </tbody>
